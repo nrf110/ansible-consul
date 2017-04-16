@@ -7,8 +7,7 @@ consul:
   config_dir: /etc/consul.d
   log_file: /var/log/consul
   dev_mode: false
-  manage_service: true
-  service_state: started
+  restart_on_change: False
   port:
     dns: 8600
     http: 8500

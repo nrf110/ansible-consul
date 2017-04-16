@@ -11,3 +11,5 @@
 
 - include: service.yml
   tags: [service]
+
+- meta: flush_handlers

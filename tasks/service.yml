@@ -1,4 +1,4 @@
 ---
 - name: Start Consul Agent
-  service: name=consul state={{ consul.service_state }} enabled=yes
-  when: consul.manage_service
+  service: name=consul state=started enabled=yes
+  register: consul_started
