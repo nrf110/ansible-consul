@@ -1,0 +1,49 @@
+---
+- name: Install Unzip
+  apt:
+    name: unzip
+    update_cache: yes
+
+- name: Create consul group
+  group:
+    name: "{{ consul.group }}"
+    state: present
+    system: yes
+  register: consul_group_created
+
+- name: Create consul user
+  user:
+    home: "{{ consul.home }}"
+    name: "{{ consul.user }}"
+    group: "{{ consul.group }}"
+    system: yes
+  when: consul_group_created|changed
+
+- name: Create consul directories
+  file:
+    state: directory
+    path: "{{ item }}"
+    owner: "{{ consul.user }}"
+    group: "{{ consul.group }}"
+    mode: 0755
+    recurse: True
+  with_items:
+    - "{{ consul.home }}"
+    - "{{ consul.home }}/bin"
+    - "{{ consul.home }}/cert"
+    - "{{ consul.data_dir }}"
+    - "{{ consul.config_dir }}"
+
+- name: Download and unpack
+  unarchive:
+    src: "{{ consul.download_url }}"
+    dest: "{{ consul.home }}/bin"
+    remote_src: yes
+    owner: "{{ consul.user }}"
+    group: "{{ consul.group }}"
+    mode: 0700
+
+- name: Add consul to PATH
+  template:
+    src: consul.sh.j2
+    dest: /etc/profile.d/consul.sh

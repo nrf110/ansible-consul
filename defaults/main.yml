@@ -1,0 +1,19 @@
+consul:
+  version: 0.8.0
+  user: consul
+  group: consul
+  home: /opt/consul
+  config_file: /etc/consul.json
+  config_dir: /etc/consul.d
+  log_file: /var/log/consul
+  dev_mode: false
+  manage_service: true
+  service_state: started
+  port:
+    dns: 8600
+    http: 8500
+    https: -1
+    rpc: 8400
+    serf_lan: 8301
+    serf_wan: 8302
+    server: 8300

@@ -1,0 +1,12 @@
+---
+- hosts: all
+  roles:
+    - ansible-consul
+  vars:
+    consul:
+      datacenter: 'test'
+      node_name: 'vagrant'
+      bootstrap_expect: 1
+      is_server: True
+      advertise:
+        address: "{{ hostvars[inventory_hostname]['ansible_all_ipv4_addresses'][1] }}"

@@ -1,0 +1,12 @@
+---
+- set_fact:
+    consul: "{{ consul | combine( { 'archive': 'consul_' + consul.version + '_linux_amd64.zip' } ) }}"
+  when: consul.archive is undefined
+
+- set_fact:
+    consul: "{{ consul | combine( { 'download_url': 'https://releases.hashicorp.com/consul/' + consul.version + '/' + consul.archive } ) }}"
+  when: consul.download is undefined
+
+- set_fact:
+    consul: "{{ consul | combine( { 'data_dir': consul.home + '/data' } ) }}"
+  when: consul.data_dir is undefined

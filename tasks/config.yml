@@ -1,0 +1,74 @@
+---
+
+# Check before creating log dir to prevent aggressively overwriting permissions
+- name: Check consul log directory
+  stat: path="{{ consul.log_file|dirname }}"
+  register: consul_log_dir
+
+- name: Create log directory
+  file:
+    path: "{{ consul.log_file|dirname }}"
+    state: directory
+    owner: "{{ consul.user }}"
+    group: "{{ consul.group }}"
+  when: not consul_log_dir.stat.exists
+
+- name: Touch the log file
+  file:
+    path: "{{ consul.log_file }}"
+    state: touch
+    owner: "{{ consul.user }}"
+    group: "{{ consul.group }}"
+
+- name: Create TLS key
+  no_log: True
+  copy:
+    content: "{{ consul.tls.key }}"
+    dest: "{{ consul.tls.key_file }}"
+    owner: "{{ consul.owner }}"
+    group: "{{ consul.group }}"
+    mode: 0600
+  when: consul.tls.key is defined
+  notify: restart consul
+
+- name: Create TLS cert
+  no_log: True
+  copy:
+    content: "{{ consul.tls.cert }}"
+    dest: "{{ consul.tls.cert_file }}"
+    owner: "{{ consul.owner }}"
+    group: "{{ consul.group }}"
+    mode: 0600
+  when: consul.tls.cert is defined
+  notify: restart consul
+
+- name: Create TLS root CA cert
+  no_log: True
+  copy:
+    content: "{{ consul.tls.ca_cert }}"
+    dest: "{{ consul.tls.ca_cert_file }}"
+    owner: "{{ consul.owner }}"
+    group: "{{ consul.group }}"
+    mode: 0600
+  when: consul.tls.ca_cert is defined
+  notify: restart consul
+
+- name: Create config file
+  template:
+    src: consul.json.j2
+    dest: "{{ consul.config_file }}"
+    owner: "{{ consul.user }}"
+    group: "{{ consul.group }}"
+    mode: 0644
+  notify: reload systemd
+
+- name: Create Init Script
+  template:
+    src: consul.service.j2
+    dest: /etc/systemd/system/consul.service
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload systemd
+    - restart consul

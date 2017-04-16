@@ -1,0 +1,212 @@
+{
+{% if consul.acl is defined %}
+{% if consul.acl.datacenter is defined %}
+  "acl_datacenter": "{{ consul.acl.datacenter }}",
+{% endif %}
+{% if consul.acl.default_policy is defined %}
+  "acl_default_policy": "{{ consul.acl.default_policy }}",
+{% endif %}
+{% if consul.acl.down_policy is defined %}
+  "acl_down_policy": "{{ consul.acl.down_policy }}",
+{% endif %}
+{% if consul.acl.agent_master_token is defined %}
+  "acl_agent_master_token": "{{ consul.acl.agent_master_token }}",
+{% endif %}
+{% if consul.acl.agent_token is defined %}
+  "acl_agent_token": "{{ consul.acl.agent_token }}",
+{% endif %}
+  "acl_enforce_version_8": {{ consul.acl.enforce_version_8|default(False) }},
+{% if consul.acl.master_token is defined %}
+  "acl_master_token": "{{ consul.acl.master_token }}",
+{% endif %}
+{% if consul.acl.replication_token is defined %}
+  "acl_replication_token": "{{ consul.acl.replication_token }}",
+{% endif %}
+{% if consul.acl.token is defined %}
+  "acl_token": "{{ consul.acl.token }}",
+{% endif %}
+{% if consul.acl.ttl is defined %}
+  "acl_ttl": "{{ consul.acl.ttl }}",
+{% endif %}
+{% endif %}
+{% if consul.addresses is defined %}
+  "addresses": {{ consul.addresses|to_nice_json }},
+{% endif %}
+{% if consul.advertise is defined %}
+{% if consul.advertise.address is defined %}
+  "advertise_addr": "{{ consul.advertise.address }}",
+{% endif %}
+{% if consul.advertise.wan_address is defined %}
+  "advertise_addr_wan": "{{ consul.advertise.wan_address }}",
+{% endif %}
+{% if consul.advertise.addresses is defined %}
+  "advertise_addrs": {{ consul.advertise.addresses|to_nice_json }},
+{% endif %}
+{% endif %}
+{% if consul.atlas is defined and consul.atlas.infrastructure is defined %}
+{% if consul.atlas.acl_token is defined %}
+  "atlas_acl_token": "{{ consul.atlas.acl_token }}",
+{% endif %}
+{% if consul.atlas.join|default(False) %}
+  "atlas_join": true,
+{% endif %}
+{% if consul.atlas.token is defined %}
+  "atlas_token": "{{ consul.atlas.token }}",
+{% endif %}
+  "atlas_infrastructure": "{{ consul.atlas.infrastructure }}",
+{% endif %}
+{% if consul.autopilot is defined %}
+  "autopilot": {
+{% if not consul.autopilot.cleanup_dead_servers|default(True) %}"
+    "cleanup_dead_servers": false
+{% endif %}
+  },
+{% endif %}
+{% if consul.bootstrap_expect is defined %}
+  "bootstrap_expect": {{ consul.bootstrap_expect }},
+{% endif %}
+{% if consul.bind_addr is defined %}
+  "bind_addr": "{{ consul.bind_addr }}",
+{% endif %}
+{% if consul.ca_file is defined %}
+  "ca_file": "{{ consul.ca_file }}",
+{% endif %}
+{% if consul.cert_file is defined and consul.key_file is defined %}
+  "cert_file": "{{ consul.cert_file }}",
+  "key_file": "{{ consul.key_file }}",
+{% endif %}
+{% if consul.verify_incoming|default(False) %}
+  "verify_incoming": true,
+{% endif %}
+{% if consul.verify_server_hostname|default(False) or consul.verify_outgoing|default(False) %}
+  "verify_outgoing": true,
+{% endif %}
+{% if consul.verify_server_hostname is defined %}
+  "verify_server_hostname": "{{ consul.verify_server_hostname }}",
+{% endif %}
+{% if consul.check_update_interval is defined %}
+  "check_update_interval": "{{ consul.check_update_interval }}",
+{% endif %}
+{% if consul.client_addr is defined %}
+  "client_addr": "{{ consul.client_addr }}",
+{% endif %}
+{% if consul.datacenter is defined %}
+  "datacenter": "{{ consul.datacenter }}",
+{% endif %}
+  "data_dir": "{{ consul.data_dir }}",
+{% if consul.disable_anonymous_signature|default(False) %}
+  "disable_anonymous_signature": true,
+{% endif %}
+{% if consul.disable_remote_exec|default(False) %}
+  "disable_remote_exec": true,
+{% endif %}
+{% if consul.disable_update_check|default(False) %}
+  "disable_update_check": true,
+{% endif %}
+{% if consul.dns_config is defined %}
+  "dns_config": {{ consul.dns_config|to_nice_json }},
+{% endif %}
+{% if consul.domain is defined %}
+  "domain": "{{ consul.domain }}",
+{% endif %}
+{% if consul.enable_debug|default(False) %}
+  "enable_debug": true,
+{% endif %}
+{% if consul.enable_syslog|default(False) %}
+  "enable_syslog": true,
+{% if consul.syslog_facility is defined %}
+  "syslog_facility": "{{ consul.syslog_facility }}",
+{% endif %}
+{% endif %}
+{% if consul.encrypt is defined %}
+  "encrypt": "{{ consul.encrypt }}",
+{% endif %}
+{% if consul.http_api_response_headers is defined %}
+  "http_api_response_headers": {{ consul.http_api_response_headers|to_nice_json }},
+{% endif %}
+{% if consul.leave_on_terminate is defined %}
+  "leave_on_terminate": {{ consul.leave_on_terminate }},
+{% endif %}
+{% if consul.log_level is defined %}
+  "log_level": "{{ consul.log_level }}",
+{% endif %}
+{% if consul.node_id is defined %}
+  "node_id": "{{ consul.node_id }}",
+{% endif %}
+{% if consul.node_name is defined %}
+  "node_name": "{{ consul.node_name }}",
+{% endif %}
+{% if consul.node_meta is defined %}
+  "node_meta": {{ consul.node_meta|to_nice_json }},
+{% endif %}
+{% if consul.performance is defined %}
+  "performance": {{ consul.performance|to_nice_json }},
+{% endif %}
+{% if consul.protocol is defined %}
+  "protocol": "{{ consul.protocol }}",
+{% endif %}
+{% if consul.raft_protocol is defined %}
+  "raft_protocol": {{ consul.raft_protocol }},
+{% endif %}
+{% if consul.reconnect_timeout is defined %}
+  "reconnect_timeout": "{{ consul.reconnect_timeout }}",
+{% endif %}
+{% if consul.reconnect_timeout_wan is defined %}
+  "reconnect_timeout_wan": "{{ consul.reconnect_timeout_wan }}",
+{% endif %}
+{% if consul.recursors is defined %}
+  "recursors": {{ consul.recursors|to_nice_json }},
+{% endif %}
+{% if consul.rejoin_after_leave|default(False) %}
+  "rejoin_after_leave": true,
+{% endif %}
+{% if consul.retry_join is defined %}
+  "retry_join": {{ consul.retry_join|to_nice_json }},
+{% endif %}
+{% if consul.retry_join_ec2 is defined %}
+  "retry_join_ec2": {{ consul.retry_join_ec2|to_nice_json }},
+{% endif %}
+{% if consul.retry_join_gce is defined %}
+  "retry_join_gce": {{ consul.retry_join_gce|to_nice_json }},
+{% endif %}
+{% if consul.retry_interval is defined %}
+  "retry_interval": "{{ consul.retry_interval }}",
+{% endif %}
+{% if consul.retry_join_wan is defined %}
+  "retry_join_wan": {{ consul.retry_join_wan|to_nice_json }},
+{% endif %}
+{% if consul.retry_interval_wan is defined %}
+  "retry_interval_wan": "{{ consul.retry_interval_wan }}",
+{% endif %}
+{% if consul.server_name is defined %}
+  "server_name": "{{ consul.server_name }}",
+{% endif %}
+{% if consul.session_ttl_min is defined %}
+  "session_ttl_min": "{{ consul.session_ttl_min }}",
+{% endif %}
+{% if consul.skip_leave_on_interrupt is defined %}
+  "skip_leave_on_interrupt": {{ consul.skip_leave_on_interrupt }},
+{% endif %}
+{% if consul.start_join is defined %}
+  "start_join": {{ consul.start_join|to_nice_json }},
+{% endif %}
+{% if consul.start_join_wan is defined %}
+  "start_join_wan": {{ consul.start_join_wan|to_nice_json }},
+{% endif %}
+{% if consul.telemetry is defined %}
+  "telemetry": {{ consul.telemetry|to_nice_json }},
+{% endif %}
+{% if consul.translate_wan_addresses|default(False) %}
+  "translate_wan_addresses": true,
+{% endif %}
+{% if consul.unix_sockets is defined %}
+  "unix_sockets": {{ consul.unix_sockets|to_nice_json }},
+{% endif %}
+{% if consul.watches is defined %}
+  "watches": {{ consul.watches|to_nice_json }},
+{% endif %}
+  "ports": {{ consul.port|to_nice_json }},
+  "server": {{ consul.is_server|default('false')|to_json }},
+  "tls_min_version": "{{ consul.tls_min_version|default('tls12')}}",
+  "ui": true
+}

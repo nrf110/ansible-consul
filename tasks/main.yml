@@ -1,0 +1,13 @@
+---
+
+- include: facts.yml
+  tags: [always]
+
+- include: install.yml
+  tags: [install]
+
+- include: config.yml
+  tags: [config]
+
+- include: service.yml
+  tags: [service]
