@@ -4,15 +4,16 @@ Requires=network-online.target
 After=network-online.target
 
 [Service]
-Enviroment="GOMAXPROCS=`nproc`"
 Restart=on-failure
 User={{ consul.user }}
 Group={{ consul.group }}
 PermissionsStartOnly=true
-ExecStartPre=/sbin/setcap CAP_NET_BIND_SERVICE=+eip {{ consul.home }}/bin/consul
-ExecStart={{ consul.home }}/bin/consul agent -config-dir {{ consul.config_dir }} -config-file={{ consul.config_file }}
+ExecStart={{ consul.home }}/bin/consul agent \
+  -config-dir {{ consul.config_dir }} \
+  -config-file={{ consul.config_file }}
 ExecReload=/bin/kill -HUP $MAINPID
-KillSignal=SIGINT
+KillSignal=SIGTERM
+KillMode=process
 
 [Install]
 WantedBy=multi-user.target
