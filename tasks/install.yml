@@ -6,41 +6,39 @@
 
 - name: Create consul group
   group:
-    name: "{{ consul.group }}"
+    name: "{{ consul_group }}"
     state: present
     system: yes
-  register: consul_group_created
 
 - name: Create consul user
   user:
-    home: "{{ consul.home }}"
-    name: "{{ consul.user }}"
-    group: "{{ consul.group }}"
+    home: "{{ consul_home }}"
+    name: "{{ consul_user }}"
+    group: "{{ consul_group }}"
     system: yes
-  when: consul_group_created|changed
 
 - name: Create consul directories
   file:
     state: directory
     path: "{{ item }}"
-    owner: "{{ consul.user }}"
-    group: "{{ consul.group }}"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
     mode: 0755
     recurse: True
   with_items:
-    - "{{ consul.home }}"
-    - "{{ consul.home }}/bin"
-    - "{{ consul.home }}/cert"
-    - "{{ consul.data_dir }}"
-    - "{{ consul.config_dir }}"
+    - "{{ consul_home }}"
+    - "{{ consul_home }}/bin"
+    - "{{ consul_home }}/cert"
+    - "{{ consul_data_dir }}"
+    - "{{ consul_config_dir }}"
 
 - name: Download and unpack
   unarchive:
-    src: "{{ consul.download_url }}"
-    dest: "{{ consul.home }}/bin"
+    src: "{{ consul_download_url }}"
+    dest: "{{ consul_home }}/bin"
     remote_src: yes
-    owner: "{{ consul.user }}"
-    group: "{{ consul.group }}"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
     mode: 0700
 
 - name: Add consul to PATH

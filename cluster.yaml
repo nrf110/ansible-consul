@@ -1,0 +1,3 @@
+---
+consul_servers: 3
+consul_clients: 1

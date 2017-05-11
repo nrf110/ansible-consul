@@ -2,65 +2,69 @@
 
 # Check before creating log dir to prevent aggressively overwriting permissions
 - name: Check consul log directory
-  stat: path="{{ consul.log_file|dirname }}"
+  stat: path="{{ consul_log_file|dirname }}"
   register: consul_log_dir
 
 - name: Create log directory
   file:
-    path: "{{ consul.log_file|dirname }}"
+    path: "{{ consul_log_file|dirname }}"
     state: directory
-    owner: "{{ consul.user }}"
-    group: "{{ consul.group }}"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
   when: not consul_log_dir.stat.exists
 
 - name: Touch the log file
   file:
-    path: "{{ consul.log_file }}"
+    path: "{{ consul_log_file }}"
     state: touch
-    owner: "{{ consul.user }}"
-    group: "{{ consul.group }}"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
 
 - name: Create TLS key
   no_log: True
   copy:
-    content: "{{ consul.tls.key }}"
-    dest: "{{ consul.tls.key_file }}"
-    owner: "{{ consul.owner }}"
-    group: "{{ consul.group }}"
+    content: "{{ consul_tls_key }}"
+    dest: "{{ consu_tls_key_file }}"
+    owner: "{{ consul_owner }}"
+    group: "{{ consul_group }}"
     mode: 0600
-  when: consul.tls.key is defined
-  notify: restart consul
+  when: consul_tls_key is defined
+  notify:
+    - restart consul
 
 - name: Create TLS cert
   no_log: True
   copy:
-    content: "{{ consul.tls.cert }}"
-    dest: "{{ consul.tls.cert_file }}"
-    owner: "{{ consul.owner }}"
-    group: "{{ consul.group }}"
+    content: "{{ consul_tls_cert }}"
+    dest: "{{ consul_tls_cert_file }}"
+    owner: "{{ consul_owner }}"
+    group: "{{ consul_group }}"
     mode: 0600
-  when: consul.tls.cert is defined
-  notify: restart consul
+  when: consul_tls_cert is defined
+  notify:
+    - restart consul
 
 - name: Create TLS root CA cert
   no_log: True
   copy:
-    content: "{{ consul.tls.ca_cert }}"
-    dest: "{{ consul.tls.ca_cert_file }}"
-    owner: "{{ consul.owner }}"
-    group: "{{ consul.group }}"
+    content: "{{ consul_tls_ca_cert }}"
+    dest: "{{ consul_tls_ca_cert_file }}"
+    owner: "{{ consul_owner }}"
+    group: "{{ consul_group }}"
     mode: 0600
-  when: consul.tls.ca_cert is defined
-  notify: restart consul
+  when: consul_tls_ca_cert is defined
+  notify:
+    - restart consul
 
 - name: Create config file
   template:
     src: consul.json.j2
-    dest: "{{ consul.config_file }}"
-    owner: "{{ consul.user }}"
-    group: "{{ consul.group }}"
+    dest: "{{ consul_config_file }}"
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
     mode: 0644
-  notify: reload systemd
+  notify:
+    - reload systemd
 
 - name: Create Init Script
   template:

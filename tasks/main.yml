@@ -1,8 +1,4 @@
 ---
-
-- include: facts.yml
-  tags: [always]
-
 - include: install.yml
   tags: [install]
 
@@ -13,3 +9,5 @@
   tags: [service]
 
 - meta: flush_handlers
+
+- include: join.yml

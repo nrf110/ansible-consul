@@ -1,0 +1,2 @@
+- name: Join Consul Cluster
+  command: "{{ consul_home }}/bin/consul join {{ consul_servers|join(' ') }}"

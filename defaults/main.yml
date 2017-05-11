@@ -1,18 +1,28 @@
-consul:
-  version: 0.8.1
-  user: consul
-  group: consul
-  home: /opt/consul
-  config_file: /etc/consul.json
-  config_dir: /etc/consul.d
-  log_file: /var/log/consul
-  dev_mode: false
-  restart_on_change: False
-  port:
-    dns: 8600
-    http: 8500
-    https: -1
-    rpc: 8400
-    serf_lan: 8301
-    serf_wan: 8302
-    server: 8300
+consul_user: consul
+consul_group: consul
+consul_version: 0.8.1
+consul_archive: "consul_{{ consul_version }}_linux_amd64.zip"
+consul_download_url: "https://releases.hashicorp.com/consul/{{ consul_version }}/{{ consul_archive }}"
+consul_home: /opt/consul
+consul_data_dir: "{{ consul_home }}/data"
+consul_config_file: /etc/consul.json
+consul_config_dir: /etc/consul.d
+consul_log_file: /var/log/consul
+consul_dev_mode: false
+consul_restart_on_change: False
+consul_datacenter: 'dc1'
+consul_server_group_name: consul_servers
+consul_servers: "{{ groups[consul_server_group_name] }}"
+consul_is_server: "{{ consul_server_group_name in group_names }}"
+consul_retry_join: "{{ consul_servers }}"
+consul_network_iface: "{{ ansible_default_ipv4.interface }}"
+consul_bind_addr: "{{ hostvars[inventory_hostname]['ansible_' + consul_network_iface]['ipv4']['address'] }}"
+consul_node_name: "{{ inventory_hostname_short }}"
+consul_ports:
+  dns: 8600
+  http: 8500
+  https: -1
+  rpc: 8400
+  serf_lan: 8301
+  serf_wan: 8302
+  server: 8300

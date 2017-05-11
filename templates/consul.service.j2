@@ -5,12 +5,16 @@ After=network-online.target
 
 [Service]
 Restart=on-failure
-User={{ consul.user }}
-Group={{ consul.group }}
+User={{ consul_user }}
+Group={{ consul_group }}
 PermissionsStartOnly=true
-ExecStart={{ consul.home }}/bin/consul agent \
-  -config-dir {{ consul.config_dir }} \
-  -config-file={{ consul.config_file }}
+ExecStart={{ consul_home }}/bin/consul agent \
+{% if consul_dev_mode %}
+  -dev
+{% else %}
+  -config-dir {{ consul_config_dir }} \
+  -config-file={{ consul_config_file }}
+{% endif %}
 ExecReload=/bin/kill -HUP $MAINPID
 KillSignal=SIGTERM
 KillMode=process

@@ -6,4 +6,4 @@
 
 - name: restart consul
   action: service name=consul state=restarted enabled=yes
-  when: consul.restart_on_change|default(False) and consul_started.changed
+  when: consul_restart_on_change|default(False) and consul_started|changed
