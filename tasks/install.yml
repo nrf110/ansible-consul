@@ -32,11 +32,21 @@
     - "{{ consul_data_dir }}"
     - "{{ consul_config_dir }}"
 
-- name: Download and unpack
+- name: Ensure staging directory exists
+  local_action: file dest="{{ consul_staging_dir }}" state=directory
+  become: False
+  run_once: True
+
+- name: Download consul package
+  local_action: "shell wget -O {{ consul_source }} {{ consul_download_url }} creates={{ consul_source }}"
+  become: False
+  run_once: True
+
+- name: Copy and unpack nomad package
   unarchive:
-    src: "{{ consul_download_url }}"
+    src: "{{ consul_source }}"
     dest: "{{ consul_home }}/bin"
-    remote_src: yes
+    copy: yes
     owner: "{{ consul_user }}"
     group: "{{ consul_group }}"
     mode: 0700

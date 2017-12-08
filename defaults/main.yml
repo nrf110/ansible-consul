@@ -1,8 +1,10 @@
 consul_user: consul
 consul_group: consul
-consul_version: 0.9.2
+consul_version: 1.0.1
 consul_archive: "consul_{{ consul_version }}_linux_amd64.zip"
 consul_download_url: "https://releases.hashicorp.com/consul/{{ consul_version }}/{{ consul_archive }}"
+consul_staging_dir: ./tarballs
+consul_source: "{{ consul_staging_dir }}/{{ consul_archive }}"
 consul_home: /opt/consul
 consul_data_dir: "{{ consul_home }}/data"
 consul_config_file: /etc/consul.json
@@ -22,7 +24,6 @@ consul_ports:
   dns: 8600
   http: 8500
   https: -1
-  rpc: 8400
   serf_lan: 8301
   serf_wan: 8302
   server: 8300
